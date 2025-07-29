@@ -1,59 +1,62 @@
-const FACTOR_MULTIPLICACION = 9 / 5;
-const FACTOR_RESTA = 32;
+function convertirTemperatura() {
+  const input = document.querySelector("#tempInput").value;
+  const unidad = document.querySelector("#unitSelect").value;
+  const campoResultado = document.querySelector("#result");
 
-function convertir(gradosAConvertir, tipoConversion) {
-  switch (tipoConversion) {
-    case "1":
-      alert(
-        gradosAConvertir +
-          " grados Celsius equivalen a " +
-          (gradosAConvertir * FACTOR_MULTIPLICACION + FACTOR_RESTA) +
-          " grados Fahrenheit"
-      );
-      principal();
-      break;
-    case "2":
-      alert(
-        gradosAConvertir +
-          " grados Fahrenheit equivalen a " +
-          (gradosAConvertir - FACTOR_RESTA) * FACTOR_MULTIPLICACION +
-          " grados Celsius"
-      );
-      principal();
-      break;
-    default:
-      principal();
-  }
-}
+  if (!input || !unidad) return;
 
-function seleccioneConversion() {
-  let gradosAConvertir;
-  let tipoConversion = prompt(`OPERACIÓN:
+  const temp = parseFloat(input);
+  let resultado = 0;
 
-    1 - Celsius a Fahrenheit
-    2 - Fahrenheit a Celsius`);
-
-  if (tipoConversion != 1 && tipoConversion != 2 && tipoConversion != null)
-    principal();
-
-  switch (tipoConversion) {
-    case "1":
-      gradosAConvertir = prompt(`Cuantos grados Celsius querés convertir?`);
-      break;
-    case "2":
-      gradosAConvertir = prompt(`Cuantos grados Fahrenheit querés convertir?`);
-      break;
-    case null:
-      return;
-    default:
-      principal();
+  if (unidad === "toF") {
+    resultado = (temp * 9) / 5 + 32;
+  } else if (unidad === "toC") {
+    resultado = ((temp - 32) * 5) / 9;
   }
 
-  convertir(gradosAConvertir, tipoConversion);
+  campoResultado.value = resultado.toFixed(2);
+
+  const nuevoRegistro = {
+    input: temp,
+    result: resultado.toFixed(2),
+    unidad,
+  };
+
+  const historial =
+    JSON.parse(localStorage.getItem("historialTemperatura")) || [];
+  historial.push(nuevoRegistro);
+  localStorage.setItem("historialTemperatura", JSON.stringify(historial));
+
+  dibujarHistorial();
 }
 
-function principal() {
-  seleccioneConversion();
+function dibujarHistorial() {
+  const listaRegistros = document.querySelector("#historyList");
+  listaRegistros.innerHTML = "";
+
+  const historial =
+    JSON.parse(localStorage.getItem("historialTemperatura")) || [];
+
+  historial.map((entry, index) => {
+    const li = document.createElement("li");
+    const label = `${entry.input}° ${entry.unidad === "toF" ? "C" : "F"} → ${
+      entry.result
+    }° ${entry.unidad === "toF" ? "F" : "C"}`;
+
+    li.innerHTML = `
+      <span>${label}</span>
+      <button onclick="eliminarRegistro(${index})">X</button>
+    `;
+    listaRegistros.appendChild(li);
+  });
 }
 
-principal();
+function eliminarRegistro(index) {
+  const historial =
+    JSON.parse(localStorage.getItem("historialTemperatura")) || [];
+  const nuevoHistorial = historial.filter((_, i) => i !== index);
+  localStorage.setItem("historialTemperatura", JSON.stringify(nuevoHistorial));
+  dibujarHistorial();
+}
+
+dibujarHistorial();

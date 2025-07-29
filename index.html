@@ -2,21 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculadora de temperaturas</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Conversor de temperaturas</h1>
-    <p>
-      Este conversor trabaja solicitando que tipo de conversión se quiere
-      realizar inicialmente: Celsius a Fahrenheit o Fahrenheit a Celsius.
-    </p>
-    <br />
-    <p>
-      Una vez introducido el tipo de operación solicita ingresar la temperatura
-      orígen para luego mostrar el resultado de la temperatura convertida.
-    </p>
-    <button onclick="principal()">Iniciar conversión</button>
+    <main class="container">
+      <h2>Calculadora de temperaturas</h2>
+      <div class="form">
+        <input
+          type="number"
+          id="tempInput"
+          placeholder="Ingresá una temperatura"
+        />
+        <select id="unitSelect">
+          <option value="" disabled selected>
+            Seleccioná el tipo de conversión
+          </option>
+          <option value="toF">Celsius → Fahrenheit</option>
+          <option value="toC">Fahrenheit → Celsius</option>
+        </select>
+        <input type="text" id="result" readonly placeholder="Result" />
+        <button onclick="convertirTemperatura()">Convertir</button>
+      </div>
+
+      <div class="history">
+        <h3>Historial de conversiones</h3>
+        <ul id="historyList"></ul>
+      </div>
+    </main>
+
     <script src="./js/main.js"></script>
   </body>
 </html>
