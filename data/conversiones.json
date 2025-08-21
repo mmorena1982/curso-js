@@ -1,0 +1,18 @@
+{
+  "conversiones": [
+    {
+      "id": "toF",
+      "origen": "Celsius",
+      "destino": "Fahrenheit",
+      "descripcion": "Convierte de Celsius a Fahrenheit",
+      "formula": "(x * 9/5) + 32"
+    },
+    {
+      "id": "toC",
+      "origen": "Fahrenheit",
+      "destino": "Celsius",
+      "descripcion": "Convierte de Fahrenheit a Celsius",
+      "formula": "(x - 32) * 5/9"
+    }
+  ]
+}
